@@ -1,0 +1,95 @@
+{
+  "approximate_values": {
+    "B_psi": 3.4782549667025466,
+    "B_q": 18.14738642008641,
+    "B_r": 99.0250691640319,
+    "D_psi": 10.154315423968917,
+    "K_bar": 476.04913249629305,
+    "L_q": 150.53995368355643,
+    "L_r": 588.7862372083875,
+    "epsilon_ex": 0.0007688815687260785,
+    "optional_contraction_coefficient_radius": 0.049240148559869135,
+    "rho_ex": 0.00022105382615323144,
+    "sigma_star": 0.7320508075688772
+  },
+  "authoritative_bounds": "symbolic formulas in Appendix K",
+  "costs": [
+    {
+      "design": "bad",
+      "m": 2,
+      "maximum_target_size": 2,
+      "targeting_incidences": 4
+    },
+    {
+      "design": "good",
+      "m": 3,
+      "maximum_target_size": 2,
+      "targeting_incidences": 6
+    },
+    {
+      "design": "isolation",
+      "m": 3,
+      "maximum_target_size": 3,
+      "targeting_incidences": 9
+    }
+  ],
+  "decimal_values_are_approximations_not_certified_intervals": true,
+  "exact_identities": {
+    "F_squared_Gaussian_L2_norm": "4/3",
+    "bad_null_vector": [
+      1,
+      -1,
+      -1,
+      1
+    ],
+    "good_reference_matrix": [
+      [
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        0,
+        1,
+        0
+      ],
+      [
+        1,
+        1,
+        0,
+        0
+      ]
+    ],
+    "good_reference_singular_values": [
+      "sqrt(3)-1",
+      "1",
+      "1",
+      "sqrt(3)+1"
+    ],
+    "gram_matrix": "I_4"
+  },
+  "purpose": "deterministic evaluation of the analytic formulas in Appendix K",
+  "symbolic_definitions": {
+    "B_psi": "9*sqrt(3)*exp(-3/2)",
+    "B_q": "(729/2)*exp(-3)",
+    "B_r": "27*sqrt(3)*(8*U_1(1/2)^4+4*U_3(1/2)*U_1(1/2)^3)",
+    "D_psi": "9*sqrt(3)*sqrt(exp(-4)+3*exp(-2))",
+    "K_bar": "sqrt(10)*L_q",
+    "L_q": "(729/2)*sqrt(a1^2*exp(-6)+3*b1^2*exp(-4))",
+    "L_r": "54*sqrt(3)*((8+11*U_2(1/2)+U_4(1/2))*U_1(1/2)^3+3*(1+U_2(1/2))*U_3(1/2)*U_1(1/2)^2)",
+    "U_d(a)": "1 if d=0; (d/(2*a*e))^(d/2) otherwise",
+    "a1": "4*U_1(1)+2*U_3(1)",
+    "b1": "2*U_1(1)+2*U_3(1)",
+    "epsilon_ex": "(sqrt(3)-1)/(2*K_bar)",
+    "optional_contraction_coefficient_radius": "1/(2*D_psi)",
+    "rho_ex": "epsilon_ex/B_psi"
+  }
+}
