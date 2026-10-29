@@ -191,23 +191,49 @@ def complete_edges(p):
 
 
 def analytic_constants():
-    u = lambda d, a: 1.0 if d == 0 else (d / (2 * a * math.e)) ** (d / 2)
     c = 9 * math.sqrt(3)
     d = 27 * math.sqrt(3) / 2
     q = 729 / 2
-    a1 = 4 * u(1, 1) + 2 * u(3, 1)
-    b1 = 2 * u(1, 1) + 2 * u(3, 1)
+    a_roots = [(7 + sign * math.sqrt(33)) / 4 for sign in (-1, 1)]
+    b_roots = [(5 + sign * math.sqrt(17)) / 4 for sign in (-1, 1)]
+    a_star = max(2 * math.sqrt(u) * abs(u - 2) * math.exp(-u) for u in a_roots)
+    b_star = max(2 * math.sqrt(u) * abs(1 - u) * math.exp(-u) for u in b_roots)
+
+    def radial_maximum(center, exponent):
+        linear = center + 2 * exponent + 2
+        discriminant = linear ** 2 - 8 * exponent * center
+        candidates = [(linear + sign * math.sqrt(discriminant)) / 2
+                      for sign in (-1, 1)]
+        return max(abs(center - s) * s ** exponent * math.exp(-s / 2)
+                   for s in candidates)
+
     bpsi = c * math.exp(-1.5)
     dpsi = c * math.sqrt(math.exp(-4) + 3 * math.exp(-2))
     bq = q * math.exp(-3)
-    lq = q * math.sqrt(a1 ** 2 * math.exp(-6) + 3 * b1 ** 2 * math.exp(-4))
-    u1, u2, u3, u4 = (u(i, 0.5) for i in range(1, 5))
-    br = 2 * d * (8 * u1 ** 4 + 4 * u3 * u1 ** 3)
-    lr = 4 * d * ((8 + 11 * u2 + u4) * u1 ** 3
-                  + 3 * (1 + u2) * u3 * u1 ** 2)
+    lq = q * math.sqrt(a_star ** 2 * math.exp(-6) + 3 * b_star ** 2 * math.exp(-4))
+    br = d / 8 * radial_maximum(8, 2)
+    lr = 2 * d * (radial_maximum(8, 1.5) / 4 + radial_maximum(10, 2.5) / 16)
     kbar = math.sqrt(10) * lq
     sigma = math.sqrt(3) - 1
     eps = sigma / (2 * kbar)
+    planning = []
+    for moment_count in (14, 20):
+        logarithm = math.log(2 * moment_count / 0.05)
+        cm = math.sqrt(10) * bq * math.sqrt(2 * logarithm)
+        cb = 2 * br * math.sqrt(2 * logarithm)
+        threshold = (2 * cm / sigma) ** 2
+        planning.append({
+            "tagged_moment_count": moment_count,
+            "confidence_failure_probability": 0.05,
+            "matrix_allowance_prefactor": cm,
+            "vector_allowance_prefactor": cb,
+            "reference_strict_sample_threshold_per_context": threshold,
+            "reference_ideal_minimum_integer_per_context": math.floor(threshold) + 1,
+            "reference_ideal_total_cells_four_contexts": 4 * (math.floor(threshold) + 1),
+            "sufficient_ball_strict_sample_threshold_per_context": 4 * threshold,
+            "sufficient_ball_ideal_minimum_integer_per_context": math.floor(4 * threshold) + 1,
+            "sufficient_ball_ideal_total_cells_four_contexts": 4 * (math.floor(4 * threshold) + 1),
+        })
     return {
         "purpose": "deterministic evaluation of the analytic formulas in Appendix K",
         "decimal_values_are_approximations_not_certified_intervals": True,
@@ -219,33 +245,72 @@ def analytic_constants():
                                       [1, 0, 1, 0], [1, 1, 0, 0]],
             "good_reference_singular_values": ["sqrt(3)-1", "1", "1", "sqrt(3)+1"],
             "bad_null_vector": [1, -1, -1, 1],
+            "equal_cost_bad_reference_matrix": [[1, 1, 1, 1], [1, 0, 1, 0],
+                                                [1, 1, 0, 0], [0, 1, 0, 1]],
+            "equal_cost_bad_null_vector": [1, -1, -1, 1],
+            "equal_cost_bad_rank": 3,
+            "nonzero_tagged_moments_for_good_and_equal_cost_bad": 14,
         },
         "symbolic_definitions": {
-            "U_d(a)": "1 if d=0; (d/(2*a*e))^(d/2) otherwise",
+            "D": "27*sqrt(3)/2",
+            "Q": "729/2",
             "B_psi": "9*sqrt(3)*exp(-3/2)",
             "D_psi": "9*sqrt(3)*sqrt(exp(-4)+3*exp(-2))",
-            "a1": "4*U_1(1)+2*U_3(1)",
-            "b1": "2*U_1(1)+2*U_3(1)",
+            "A_star": "max_{u=(7+-sqrt(33))/4} 2*sqrt(u)*abs(u-2)*exp(-u)",
+            "B_star": "max_{u=(5+-sqrt(17))/4} 2*sqrt(u)*abs(1-u)*exp(-u)",
+            "R(c,a)": "max_{s=(c+2*a+2+-sqrt((c+2*a+2)^2-8*a*c))/2} abs(c-s)*s^a*exp(-s/2)",
             "B_q": "(729/2)*exp(-3)",
-            "L_q": "(729/2)*sqrt(a1^2*exp(-6)+3*b1^2*exp(-4))",
-            "B_r": "27*sqrt(3)*(8*U_1(1/2)^4+4*U_3(1/2)*U_1(1/2)^3)",
-            "L_r": "54*sqrt(3)*((8+11*U_2(1/2)+U_4(1/2))*U_1(1/2)^3+3*(1+U_2(1/2))*U_3(1/2)*U_1(1/2)^2)",
+            "L_q": "Q*sqrt(A_star^2*exp(-6)+3*B_star^2*exp(-4))",
+            "B_r": "(D/8)*R(8,2)",
+            "L_r": "2*D*(R(8,3/2)/4+R(10,5/2)/16)",
             "K_bar": "sqrt(10)*L_q",
             "epsilon_ex": "(sqrt(3)-1)/(2*K_bar)",
             "rho_ex": "epsilon_ex/B_psi",
             "optional_contraction_coefficient_radius": "1/(2*D_psi)",
         },
+        "bound_interpretations": {
+            "B_r": "exact supremum norm of r for the declared observable",
+            "L_q_and_L_r": "proved upper bounds, not exact multivariate Lipschitz constants",
+            "K_bar": "conservative upper bound for the family matrix perturbation constant",
+            "epsilon_ex_and_rho_ex": "sufficient local radii, not identifiability thresholds",
+        },
         "approximate_values": {
             "sigma_star": sigma, "B_psi": bpsi, "D_psi": dpsi,
+            "A_star": a_star, "B_star": b_star,
             "B_q": bq, "L_q": lq, "B_r": br, "L_r": lr,
             "K_bar": kbar, "epsilon_ex": eps, "rho_ex": eps / bpsi,
             "optional_contraction_coefficient_radius": 1 / (2 * dpsi),
         },
         "costs": [
             {"design": "bad", "m": 2, "maximum_target_size": 2, "targeting_incidences": 4},
+            {"design": "equal_cost_bad", "m": 3, "maximum_target_size": 2, "targeting_incidences": 6},
             {"design": "good", "m": 3, "maximum_target_size": 2, "targeting_incidences": 6},
             {"design": "isolation", "m": 3, "maximum_target_size": 3, "targeting_incidences": 9},
         ],
+        "idealized_equal_count_planning": {
+            "assumptions": [
+                "fixed tests and equal n iid stationary joint cells in each of four used contexts",
+                "no additional drift, sampling-law, evaluation or matrix-entry error allowances",
+                "ideal exact lower singular-value certificate for the displayed minimum counts",
+                "14 counts only nonzero tagged moments; 20 is the generic N^2+N upper count",
+            ],
+            "symbolic_formulas": {
+                "ell": "log(2*L/alpha)",
+                "c_M": "sqrt(10)*B_q*sqrt(2*ell)",
+                "c_b": "2*B_r*sqrt(2*ell)",
+                "beta_M": "c_M/sqrt(n)",
+                "beta_b": "c_b/sqrt(n)",
+                "reference_strict_threshold": "n > (2*c_M/sigma_star)^2",
+                "sufficient_ball_strict_threshold": "n > 4*(2*c_M/sigma_star)^2",
+            },
+            "numerical_tightness_requirement": "s(Mhat)-eta_s <= shat <= s(Mhat); sufficient reference passage condition: 2*beta_M+eta_s < sigma_star",
+            "qualifications": [
+                "floating-point evaluations are not certified planning intervals",
+                "minimum integers have very little slack; account for numerical tightness explicitly",
+                "sufficient planning counts are not necessary, minimax, observed passage predictions, or useful-accuracy guarantees",
+            ],
+            "approximate_values": planning,
+        },
     }
 
 
@@ -267,6 +332,22 @@ class ExactCertificateTests(unittest.TestCase):
         self.assertTrue(result["success"])
         self.assertEqual(result["feasible_cliques_checked"], 15)
         self.assertEqual(abs(int(result["certificates"][-1]["minor_determinant"])), 2)
+
+    def test_equal_cost_bad_four_gene_exact_collision(self):
+        bad = verify_problem(self.problem(4, 3, [[2, 4], [3, 4], [1, 3]], budget=2))
+        good = verify_problem(self.problem(4, 3, [[2, 3], [2, 4], [3, 4]], budget=2))
+        self.assertFalse(bad["success"])
+        self.assertEqual(bad["deficient_clique"], [1, 2, 3, 4])
+        self.assertEqual(bad["deficient_rank"], 3)
+        self.assertEqual(bad["null_vector"], [1, -1, -1, 1])
+        self.assertEqual(bad["retention_matrix"],
+                         [[1, 1, 1, 1], [1, 0, 1, 0], [1, 1, 0, 0], [0, 1, 0, 1]])
+        self.assertEqual(determinant(bad["retention_matrix"]), 0)
+        for field in ("m", "total_contexts_including_baseline", "maximum_target_size", "targeting_incidences"):
+            self.assertEqual(bad[field], good[field])
+        for report in (bad, good):
+            # Four tagged r moments plus one q moment per retained component.
+            self.assertEqual(4 + sum(map(sum, report["retention_matrix"])), 14)
 
     def test_six_gene_order_three(self):
         result = verify_problem(self.problem(6, 3, [[2, 6], [3, 6], [4, 6], [5, 6]], budget=2))

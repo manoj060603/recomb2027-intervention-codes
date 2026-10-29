@@ -29,6 +29,6 @@ for (x,y),s,dx,dy in zip(p,['000','110','101','011'],[-7,7,0,23],[-14,-14,10,-2]
   c.setFillColor(white); c.rect(tx-10,ty-2,21,12,stroke=0,fill=1)
  text(tx,ty,s)
 text(351,111,'Three bits: order 3 succeeds')
-text(351,5,'Real determinant = 2')
+text(351,5,'Absolute determinant = 2')
 c.showPage(); c.save()
 print(out)

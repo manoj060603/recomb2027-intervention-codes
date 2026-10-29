@@ -34,11 +34,23 @@ an integer null vector, aligned with its listed vertices. Its proper
 subsets were already checked, so this first obstruction is minimal.
 
 The examples are the invalid four-gene square codes, the valid four-gene
-tetrahedron codes, and the six-gene four-bit construction. The self-checks
+tetrahedron codes, an equal-cost invalid four-gene design, and the six-gene
+four-bit construction. There are 13 deterministic self-checks. The self-checks
 also cover `p = 1`, zero interaction order, an edgeless reciprocal graph,
 wide matrices, singleton targeting, the full targeting budget, budget
 violations, and failure of the six-gene construction when the interaction
 order is increased to five.
+
+The equal-cost negative design has target sets `{2,4}`, `{3,4}`, `{1,3}`.
+Its baseline-inclusive retention rows are `1111`, `1010`, `1100`, `0101`;
+its rank is exactly three and its kernel is spanned by `(1,-1,-1,1)`.
+The good and equal-cost negative designs both have three nonbaseline
+contexts, four total contexts, maximum target size two, six targeting
+incidences, and fourteen nonzero tagged moments for Appendix K's common
+test. The original two-context square remains a separate geometric example.
+The same-family exact stationary-law collision and its false-PASS consequence
+are proved in the paper; the finite algebra outputs do not replace those
+analytic proofs or constitute observed statistical performance.
 
 The companion does not enumerate optimal designs or prove universal
 complexity bounds. Explicit clique enumeration is finite and can be
@@ -57,6 +69,30 @@ define the proved envelopes and sufficient radius. The analytic basis is
 psi_j(x) = 9 sqrt(3) e_j product_{k != j} x_k exp(-|x|^2/2)
 phi(x) = (27 sqrt(3)/2) product_k x_k exp(-|x|^2/2).
 ```
+
+The current formulas use the exact observable supremum `B_r`, obtained by
+radial maximization, and sharper derivative bounds for `L_q` and `L_r`.
+The latter remain Lipschitz upper bounds, not exact multivariate Lipschitz
+norms. `K_bar = sqrt(10)*L_q` is a conservative family perturbation bound.
+The sufficient radii are not identifiability thresholds; a valid observed
+certificate can apply beyond them. Exact expressions in Appendix K govern
+certification: rounding a displayed decimal down does not produce an upper
+bound. In particular, the floating-point outputs here are not an interval
+arithmetic implementation.
+
+The constants output includes a qualified planning illustration at failure
+probability `alpha = 0.05`. It distinguishes the fourteen nonzero moments
+of this explicit example from the generic count `N^2+N = 20`. With no extra
+bias/error allowances and an ideal exact singular-value certificate, the
+strict Gaussian-reference planning minimum is 311099 iid cells per context
+for fourteen moments (328634 for twenty). The sufficient-family-ball
+analogues are 1244394 and 1314535 cells per context. These are conservative
+sufficient counts, not necessary/minimax sample counts, observed passage
+predictions, or guarantees of useful accuracy. The minimally rounded counts
+have very little numerical slack. To plan with a numerical lower certificate,
+one additionally needs its tightness bound
+`s(Mhat)-eta_s <= shat <= s(Mhat)` and, at the reference,
+`2*beta_M + eta_s < sigma_star`; mere conservativeness is insufficient.
 
 Reference moments, orthonormality, the common divergence, and the singular
 values are proved by Gaussian integration and exact linear algebra in

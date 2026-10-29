@@ -1,24 +1,38 @@
 {
   "approximate_values": {
+    "A_star": 1.380333238622816,
     "B_psi": 3.4782549667025466,
     "B_q": 18.14738642008641,
-    "B_r": 99.0250691640319,
+    "B_r": 29.408703376654895,
+    "B_star": 0.5872090310626703,
     "D_psi": 10.154315423968917,
-    "K_bar": 476.04913249629305,
-    "L_q": 150.53995368355643,
-    "L_r": 588.7862372083875,
-    "epsilon_ex": 0.0007688815687260785,
+    "K_bar": 177.33330089771803,
+    "L_q": 56.077713583277095,
+    "L_r": 149.96181933360475,
+    "epsilon_ex": 0.0020640534063906817,
     "optional_contraction_coefficient_radius": 0.049240148559869135,
-    "rho_ex": 0.00022105382615323144,
+    "rho_ex": 0.0005934163614082163,
     "sigma_star": 0.7320508075688772
   },
   "authoritative_bounds": "symbolic formulas in Appendix K",
+  "bound_interpretations": {
+    "B_r": "exact supremum norm of r for the declared observable",
+    "K_bar": "conservative upper bound for the family matrix perturbation constant",
+    "L_q_and_L_r": "proved upper bounds, not exact multivariate Lipschitz constants",
+    "epsilon_ex_and_rho_ex": "sufficient local radii, not identifiability thresholds"
+  },
   "costs": [
     {
       "design": "bad",
       "m": 2,
       "maximum_target_size": 2,
       "targeting_incidences": 4
+    },
+    {
+      "design": "equal_cost_bad",
+      "m": 3,
+      "maximum_target_size": 2,
+      "targeting_incidences": 6
     },
     {
       "design": "good",
@@ -41,6 +55,39 @@
       -1,
       -1,
       1
+    ],
+    "equal_cost_bad_null_vector": [
+      1,
+      -1,
+      -1,
+      1
+    ],
+    "equal_cost_bad_rank": 3,
+    "equal_cost_bad_reference_matrix": [
+      [
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        0,
+        1,
+        0
+      ],
+      [
+        1,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        1
+      ]
     ],
     "good_reference_matrix": [
       [
@@ -74,20 +121,72 @@
       "1",
       "sqrt(3)+1"
     ],
-    "gram_matrix": "I_4"
+    "gram_matrix": "I_4",
+    "nonzero_tagged_moments_for_good_and_equal_cost_bad": 14
+  },
+  "idealized_equal_count_planning": {
+    "approximate_values": [
+      {
+        "confidence_failure_probability": 0.05,
+        "matrix_allowance_prefactor": 204.1550610848211,
+        "reference_ideal_minimum_integer_per_context": 311099,
+        "reference_ideal_total_cells_four_contexts": 1244396,
+        "reference_strict_sample_threshold_per_context": 311098.448092997,
+        "sufficient_ball_ideal_minimum_integer_per_context": 1244394,
+        "sufficient_ball_ideal_total_cells_four_contexts": 4977576,
+        "sufficient_ball_strict_sample_threshold_per_context": 1244393.792371988,
+        "tagged_moment_count": 14,
+        "vector_allowance_prefactor": 209.24348101584357
+      },
+      {
+        "confidence_failure_probability": 0.05,
+        "matrix_allowance_prefactor": 209.8298054938313,
+        "reference_ideal_minimum_integer_per_context": 328634,
+        "reference_ideal_total_cells_four_contexts": 1314536,
+        "reference_strict_sample_threshold_per_context": 328633.5508168906,
+        "sufficient_ball_ideal_minimum_integer_per_context": 1314535,
+        "sufficient_ball_ideal_total_cells_four_contexts": 5258140,
+        "sufficient_ball_strict_sample_threshold_per_context": 1314534.2032675624,
+        "tagged_moment_count": 20,
+        "vector_allowance_prefactor": 215.0596643997233
+      }
+    ],
+    "assumptions": [
+      "fixed tests and equal n iid stationary joint cells in each of four used contexts",
+      "no additional drift, sampling-law, evaluation or matrix-entry error allowances",
+      "ideal exact lower singular-value certificate for the displayed minimum counts",
+      "14 counts only nonzero tagged moments; 20 is the generic N^2+N upper count"
+    ],
+    "numerical_tightness_requirement": "s(Mhat)-eta_s <= shat <= s(Mhat); sufficient reference passage condition: 2*beta_M+eta_s < sigma_star",
+    "qualifications": [
+      "floating-point evaluations are not certified planning intervals",
+      "minimum integers have very little slack; account for numerical tightness explicitly",
+      "sufficient planning counts are not necessary, minimax, observed passage predictions, or useful-accuracy guarantees"
+    ],
+    "symbolic_formulas": {
+      "beta_M": "c_M/sqrt(n)",
+      "beta_b": "c_b/sqrt(n)",
+      "c_M": "sqrt(10)*B_q*sqrt(2*ell)",
+      "c_b": "2*B_r*sqrt(2*ell)",
+      "ell": "log(2*L/alpha)",
+      "reference_strict_threshold": "n > (2*c_M/sigma_star)^2",
+      "sufficient_ball_strict_threshold": "n > 4*(2*c_M/sigma_star)^2"
+    }
   },
   "purpose": "deterministic evaluation of the analytic formulas in Appendix K",
   "symbolic_definitions": {
+    "A_star": "max_{u=(7+-sqrt(33))/4} 2*sqrt(u)*abs(u-2)*exp(-u)",
     "B_psi": "9*sqrt(3)*exp(-3/2)",
     "B_q": "(729/2)*exp(-3)",
-    "B_r": "27*sqrt(3)*(8*U_1(1/2)^4+4*U_3(1/2)*U_1(1/2)^3)",
+    "B_r": "(D/8)*R(8,2)",
+    "B_star": "max_{u=(5+-sqrt(17))/4} 2*sqrt(u)*abs(1-u)*exp(-u)",
+    "D": "27*sqrt(3)/2",
     "D_psi": "9*sqrt(3)*sqrt(exp(-4)+3*exp(-2))",
     "K_bar": "sqrt(10)*L_q",
-    "L_q": "(729/2)*sqrt(a1^2*exp(-6)+3*b1^2*exp(-4))",
-    "L_r": "54*sqrt(3)*((8+11*U_2(1/2)+U_4(1/2))*U_1(1/2)^3+3*(1+U_2(1/2))*U_3(1/2)*U_1(1/2)^2)",
-    "U_d(a)": "1 if d=0; (d/(2*a*e))^(d/2) otherwise",
-    "a1": "4*U_1(1)+2*U_3(1)",
-    "b1": "2*U_1(1)+2*U_3(1)",
+    "L_q": "Q*sqrt(A_star^2*exp(-6)+3*B_star^2*exp(-4))",
+    "L_r": "2*D*(R(8,3/2)/4+R(10,5/2)/16)",
+    "Q": "729/2",
+    "R(c,a)": "max_{s=(c+2*a+2+-sqrt((c+2*a+2)^2-8*a*c))/2} abs(c-s)*s^a*exp(-s/2)",
     "epsilon_ex": "(sqrt(3)-1)/(2*K_bar)",
     "optional_contraction_coefficient_radius": "1/(2*D_psi)",
     "rho_ex": "epsilon_ex/B_psi"

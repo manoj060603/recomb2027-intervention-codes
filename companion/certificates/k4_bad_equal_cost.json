@@ -1,0 +1,252 @@
+{
+  "arithmetic": "exact rational; identical rank over the real numbers",
+  "certificates": [
+    {
+      "clique": [
+        1
+      ],
+      "minor_context_rows": [
+        0
+      ],
+      "minor_determinant": "1",
+      "rank": 1
+    },
+    {
+      "clique": [
+        2
+      ],
+      "minor_context_rows": [
+        0
+      ],
+      "minor_determinant": "1",
+      "rank": 1
+    },
+    {
+      "clique": [
+        3
+      ],
+      "minor_context_rows": [
+        0
+      ],
+      "minor_determinant": "1",
+      "rank": 1
+    },
+    {
+      "clique": [
+        4
+      ],
+      "minor_context_rows": [
+        0
+      ],
+      "minor_determinant": "1",
+      "rank": 1
+    },
+    {
+      "clique": [
+        1,
+        2
+      ],
+      "minor_context_rows": [
+        0,
+        1
+      ],
+      "minor_determinant": "-1",
+      "rank": 2
+    },
+    {
+      "clique": [
+        1,
+        3
+      ],
+      "minor_context_rows": [
+        0,
+        2
+      ],
+      "minor_determinant": "-1",
+      "rank": 2
+    },
+    {
+      "clique": [
+        1,
+        4
+      ],
+      "minor_context_rows": [
+        0,
+        1
+      ],
+      "minor_determinant": "-1",
+      "rank": 2
+    },
+    {
+      "clique": [
+        2,
+        3
+      ],
+      "minor_context_rows": [
+        0,
+        1
+      ],
+      "minor_determinant": "1",
+      "rank": 2
+    },
+    {
+      "clique": [
+        2,
+        4
+      ],
+      "minor_context_rows": [
+        0,
+        2
+      ],
+      "minor_determinant": "-1",
+      "rank": 2
+    },
+    {
+      "clique": [
+        3,
+        4
+      ],
+      "minor_context_rows": [
+        0,
+        1
+      ],
+      "minor_determinant": "-1",
+      "rank": 2
+    },
+    {
+      "clique": [
+        1,
+        2,
+        3
+      ],
+      "minor_context_rows": [
+        0,
+        1,
+        2
+      ],
+      "minor_determinant": "1",
+      "rank": 3
+    },
+    {
+      "clique": [
+        1,
+        2,
+        4
+      ],
+      "minor_context_rows": [
+        0,
+        1,
+        2
+      ],
+      "minor_determinant": "1",
+      "rank": 3
+    },
+    {
+      "clique": [
+        1,
+        3,
+        4
+      ],
+      "minor_context_rows": [
+        0,
+        1,
+        2
+      ],
+      "minor_determinant": "-1",
+      "rank": 3
+    },
+    {
+      "clique": [
+        2,
+        3,
+        4
+      ],
+      "minor_context_rows": [
+        0,
+        1,
+        2
+      ],
+      "minor_determinant": "-1",
+      "rank": 3
+    }
+  ],
+  "deficient_clique": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "deficient_clique_size": 4,
+  "deficient_rank": 3,
+  "feasible_cliques_checked": 15,
+  "m": 3,
+  "maximum_target_size": 2,
+  "minimal_obstruction": true,
+  "name": "K4, order three, equal-cost invalid design",
+  "null_vector": [
+    1,
+    -1,
+    -1,
+    1
+  ],
+  "null_vector_coordinate_order": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "p": 4,
+  "r": 3,
+  "retention_matrix": [
+    [
+      1,
+      1,
+      1,
+      1
+    ],
+    [
+      1,
+      0,
+      1,
+      0
+    ],
+    [
+      1,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      0,
+      1
+    ]
+  ],
+  "success": false,
+  "target_budget": 2,
+  "target_codes": [
+    [
+      0,
+      0,
+      1
+    ],
+    [
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      1
+    ],
+    [
+      1,
+      1,
+      0
+    ]
+  ],
+  "targeting_incidences": 6,
+  "total_contexts_including_baseline": 4
+}
